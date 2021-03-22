@@ -12,5 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('hola');
+});
+Route::get('/producto/{id}', function ($id) {
+   
+    return view('verproducto')
+    ->with('id',$id);
+});
+Route::get('/contacto', 
+    
+    function () {
+        $contacto='Aneth Ochoa';
+        $valores=7;
+        $color="#ccc";
+            return view('contacto')
+            ->with('nombre',$contacto)
+            ->with('fondo',$color)
+            ->with('valores',$valores);
 });
