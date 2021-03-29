@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('practica');
 });
 Route::get('/producto/{id}', function ($id) {
    

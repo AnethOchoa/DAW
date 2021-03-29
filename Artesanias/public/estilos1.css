@@ -1,0 +1,27 @@
+#seccion1{
+    height: 600px;
+    background-color: #fafafa;
+}
+.cuadro{
+    background-color:  rgb(42, 155, 248);
+    height: 450px;
+    margin-top: 20px;
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+    
+}
+.dos{
+    margin-left: 1%;
+}
+.med{
+    height: 100px;
+}
+.med1{
+    height: 300px;
+}
+.tres{
+    margin-left: 3%;
+    margin-right: 3%;
+    height: 200px;
+}
