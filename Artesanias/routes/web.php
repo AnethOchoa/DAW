@@ -12,9 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('practica');
+    return view('index');
 });
-Route::get('/producto/{id}', function ($id) {
+
+Route::get('/producto/{id}', function ($id,$nombre) {
    
     return view('verproducto')
     ->with('id',$id);
@@ -29,4 +30,19 @@ Route::get('/contacto',
             ->with('nombre',$contacto)
             ->with('fondo',$color)
             ->with('valores',$valores);
+});
+
+Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
+    Route::get('/', function () {
+        return view('admin.index');
+    });
+    Route::get('/usuarios', 'Admin\UsuariosController@index');
+    
+    Route::get('/categorias', function () {
+        return view('admin.categorias');
+    });
+    Route::get('/productos', 'Admin\ProductosController@index');
+
+    Route::resource('productos', 'Admin\ProductosController');
+    Route::resource('usuarios', 'Admin\UsuariosController');
 });
