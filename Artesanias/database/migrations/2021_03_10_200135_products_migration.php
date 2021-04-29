@@ -20,6 +20,7 @@ class ProductsMigration extends Migration
             $table->integer('stock');
             $table->double('price', 10, 2);
             $table->string('image');
+            $table->string('slug');
             $table->timestamps();
         });
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Validator;
+use App\Product;
 
 class ProductosController extends Controller
 {
@@ -14,8 +16,11 @@ class ProductosController extends Controller
      */
     public function index()
     {
-       
-        return view('admin.productos');
+       $datos=\DB::table('products')
+       ->select('products.*')
+       ->orderBy('id','DESC')
+       ->get();
+       return view('admin.productos')->with('productos',$datos);
     }
 
     /**
@@ -36,7 +41,36 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        dd("hola");
+        $validator = Validator::make($request->all(),[
+        'nombre' => 'required|max:255|min:1',
+        'descripcion' => 'required|max:255|min:1',
+        'stock' => 'required|max:255|min:1|numeric',
+        'precio' => 'required|max:255|min:1|numeric',
+        'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+        ]);
+        if($validator->fails()){
+            return back()
+            ->withInput()
+            ->with('errorInsert', 'Favor de llenar todos los campos.')
+            ->withErrors('Favor de llenar los campos');
+            
+        }else{
+            $imagen=$request->file('imagen');
+            $nombre=time().'.'.$imagen->getClientOriginalExtension();
+            $destino = public_path('img/productos');
+            $request->imagen->move($destino, $nombre);
+            $producto = Product::create([
+                'name'=>$request->nombre,
+                'description'=>$request->descripcion,
+                'stock'=>$request->stock,
+                'price'=>$request->precio,
+                'image'=>$nombre,
+                'slug'=>'',
+            ]);
+            $producto->save();
+            return back()->with("Listo", "Se ha insertado correctamente");
+
+        }
     }
 
     /**
