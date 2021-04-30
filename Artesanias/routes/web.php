@@ -42,6 +42,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
         return view('admin.categorias');
     });
     Route::get('/productos', 'Admin\ProductosController@index');
+    Route::post('/productos/edit', 'Admin\ProductosController@edit');
 
     Route::resource('productos', 'Admin\ProductosController');
     Route::resource('usuarios', 'Admin\UsuariosController');

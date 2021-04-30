@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Product;
+use File;
 
 class ProductosController extends Controller
 {
@@ -52,7 +53,7 @@ class ProductosController extends Controller
             return back()
             ->withInput()
             ->with('errorInsert', 'Favor de llenar todos los campos.')
-            ->withErrors('Favor de llenar los campos');
+            ->withErrors($validator);
             
         }else{
             $imagen=$request->file('imagen');
@@ -90,9 +91,45 @@ class ProductosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'nombre' => 'required|max:255|min:1',
+            'descripcion' => 'required|max:255|min:1',
+            'stock' => 'required|max:255|min:1|numeric',
+            'precio' => 'required|max:255|min:1|numeric',
+           
+            ]);
+            if($validator->fails()){
+                return back()
+                ->withInput()
+                ->with('errorEdit', 'Favor de llenar todos los campos.')
+                ->withErrors($validator);
+                
+            }else{
+                $producto=Product::find($request->id);
+                $producto->name=$request->nombre;
+                $producto->description=$request->descripcion;
+                $producto->stock=$request->stock;
+                $producto->price=$request->precio;
+                $validator2 = Validator::make($request->all(),[
+                    'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+                ]);
+
+                if(!$validator2->fails()){
+                    $imagen=$request->file('imagen');
+                    $nombre=time().'.'.$imagen->getClientOriginalExtension();
+                    $destino = public_path('img/productos');
+                    $request->imagen->move($destino, $nombre);
+                    if(File::exists(public_path('img/productos/'.$producto->image))){
+                        unlink(public_path('img/productos/' .$producto->image));
+                    }
+                    $producto->image=$nombre;
+                }
+                
+                $producto->save();
+                return back()->with('Listo', 'Se ha actualizado correctamente');
+            }
     }
 
     /**
@@ -115,6 +152,11 @@ class ProductosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $producto=Product::find($id);
+        if(File::exists(public_path('img/productos/'.$producto->image))){
+            unlink(public_path('img/productos/' .$producto->image));
+        }
+        $producto->delete();
+        return back()->with('Listo', 'Se ha eliminado correctamente');
     }
 }
