@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use App\Product;
 use File;
+use Auth;
 
 class ProductosController extends Controller
 {
@@ -15,8 +16,12 @@ class ProductosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(){
+        $this->middleware('auth');
+    }
     public function index()
     {
+        if(Auth::user()->level  !== "administrador"){return redirect('/admin');}
        $datos=\DB::table('products')
        ->select('products.*')
        ->orderBy('id','DESC')

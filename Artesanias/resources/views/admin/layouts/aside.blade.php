@@ -10,10 +10,13 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('/usuarios/'.Auth::user()->img_profile )}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"> 
+          {{ Auth::user()->name }}
+          <br>  
+          {{ Auth::user()->email }}</a>
         </div>
       </div>
 
@@ -42,23 +45,57 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+          
+            @if( Auth::user()->level  == "cliente")
+            <li class="nav-item">
+                <a href="./index2.html" class="nav-link">
+                  <i class="far fa-list nav-icon"></i>
+                  <p>PEDIDOS</p>
+                </a>
+              </li>
+            @endif
+
+            @if( Auth::user()->level  == "administrador")
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="/admin/usuarios" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>USUARIOS</p>
                 </a>
               </li>
+
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="/admin/clientes" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>CLIENTES</p>
+                </a>
+              </li>
+
+             
+                <li class="nav-item">
+                <a href="/admin/productos" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>PRODUCTOS</p>
                 </a>
               </li>
+   
+              
               <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
+                <a href="/admin/categorias" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>CATEGORIAS</p>
+                </a>
+              </li>
+              @endif
+              <li class="nav-item">
+                <  <a class="nav-link" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                  <i class="far fa-logout nav-icon"></i>
+                  <p>LOGOUT</p>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                      @csrf
+                  </form>
                 </a>
               </li>
             </ul>

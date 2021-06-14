@@ -33,10 +33,10 @@ Route::get('/contacto',
 });
 
 Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
-    Route::get('/', function () {
-        return view('admin.index');
-    });
+    Route::get('/', 'Admin\AdminController@index');
     Route::get('/usuarios', 'Admin\UsuariosController@index');
+
+    Route::get('/clientes', 'Admin\ClientesController@index');
     
     Route::get('/categorias', function () {
         return view('admin.categorias');
@@ -47,3 +47,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::resource('productos', 'Admin\ProductosController');
     Route::resource('usuarios', 'Admin\UsuariosController');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
