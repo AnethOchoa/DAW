@@ -8,14 +8,15 @@
           <div class="col-sm-6">
             <h1 class="m-0">Clientes</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
+          <div class="col-sm-6"> 
+          <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">
                     <li class="breadcrumb-item"><a href="#">
-                        <a class="btn btn-outline-primary btn-sm" href="admin/generarPDF">
+                        <a class="btn btn-outline-primary btn-sm" target="_blank" href="/admin/generarPDF">
                             <i class="fa fa-print"></i> Imprimir datos</a>
                     </li>
-            <ol class="breadcrumb float-sm-right">
-             
+           
+              <li class="breadcrumb-item">
               <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modal-add">
                 <i class="fa fa-plus"></i> Agregar clientes</button>
               </li>

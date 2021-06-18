@@ -37,6 +37,7 @@ Route::group(['prefix'=>'admin','as'=>'admin.'], function(){
     Route::get('/usuarios', 'Admin\UsuariosController@index');
 
     Route::get('/clientes', 'Admin\ClientesController@index');
+    Route::get('/generarPDF', 'Admin\ClientesController@generar');
     
     Route::get('/categorias', function () {
         return view('admin.categorias');

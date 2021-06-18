@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use PDF;
 
 class ClientesController extends Controller
 {
@@ -17,13 +18,27 @@ class ClientesController extends Controller
         ->select('clients.*','users.id as idUser', 'users.email', 'users.name')
         ->orderBy('clients.id','DESC')
         ->join('users','clients.id_user','=','users.id')
+        ->get();
+        
        /* $datos2=\DB::table('users')
         ->select('users.*')
         ->where('id','=',$datos[0]->id_user)
         ->orderBy('id','DESC')
         ->get();*/
-        ->get();
         
         return view('admin.clientes')->with('datos',$datos);
+    }
+
+    public function generar(){
+        $datos=\DB::table('clients')
+        ->select('clients.*','users.id as idUser', 'users.email', 'users.name')
+        ->orderBy('clients.id','DESC')
+        ->join('users','clients.id_user','=','users.id')
+        ->get();
+        $fecha=date("Y-m-d");
+        $todo=compact('datos','fecha');
+        $pdf = PDF::loadView('reportes.clientes', $todo);
+        //return $pdf->download('invoice.pdf');
+        return $pdf->download('reporte_'.date('Y_m_d_h_m_s').'.pdf');
     }
 }
